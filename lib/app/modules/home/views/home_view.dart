@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:myapp/app/controllers/auth_controller.dart';
+import 'package:myapp/app/modules/mahasiswa/views/mahasiswa_add_view.dart';
 import 'package:myapp/app/modules/mahasiswa/views/mahasiswa_view.dart';
 
 import '../controllers/home_controller.dart';
@@ -25,10 +26,26 @@ class _DashboardAdminState extends State<DashboardAdmin> {
   final cAuth = Get.find<AuthController>();
   int _index = 0;
   List<Map> _fragment = [
-    {'title': 'Dashboard', 'view': MahasiswaView() },
-    {'title': 'Data Mahasiswa', 'view': MahasiswaView()},
-    {'title': 'Data Dosen', 'view': MahasiswaView()},
-    {'title': 'Data Pegawai', 'view': MahasiswaView()}
+    {
+      'title': 'Dashboard',
+      'view': MahasiswaView(),
+      'add': () => MahasiswaAddView()
+    },
+    {
+      'title': 'Data Mahasiswa',
+      'view': MahasiswaView(),
+      'add': () => MahasiswaAddView()
+    },
+    {
+      'title': 'Data Dosen',
+      'view': MahasiswaView(),
+      'add': () => MahasiswaAddView()
+    },
+    {
+      'title': 'Data Pegawai',
+      'view': MahasiswaView(),
+      'add': () => MahasiswaAddView()
+    }
   ];
   @override
   Widget build(BuildContext context) {
@@ -37,13 +54,21 @@ class _DashboardAdminState extends State<DashboardAdmin> {
       appBar: AppBar(
         backgroundColor: Colors.indigo,
         titleSpacing: 0,
-        title: Text(_fragment[_index]['title'],
+        title: Text(
+          _fragment[_index]['title'],
           style: TextStyle(
             color: Colors.white,
           ),
         ),
       ),
-      body: _fragment[_index]['view'] ,
+      body: _fragment[_index]['view'],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.to(_fragment[_index]['add']);
+        },
+        backgroundColor: Colors.indigo,
+        child: Icon(Icons.add),
+      ),
     );
   }
 
