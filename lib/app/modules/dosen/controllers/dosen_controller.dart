@@ -2,34 +2,35 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class MahasiswaController extends GetxController {
-  //TODO: Implement MahasiswaController
-  late TextEditingController cNpm;
+class DosenController extends GetxController {
+  //TODO: Implement DosenController
+  late TextEditingController cNidn;
   late TextEditingController cNama;
-  late TextEditingController cAlamat;
+  late TextEditingController cProdi;
+  late TextEditingController cFakultas;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<QuerySnapshot<Object?>> GetData() async {
-    CollectionReference mahasiswa = firestore.collection('mahasiswa');
+    CollectionReference dosen = firestore.collection('dosen');
 
-    return mahasiswa.get();
+    return dosen.get();
   }
 
   Stream<QuerySnapshot<Object?>> StreamData() {
-    CollectionReference mahasiswa = firestore.collection('mahasiswa');
+    CollectionReference dosen = firestore.collection('dosen');
 
-    return mahasiswa.snapshots();
+    return dosen.snapshots();
   }
 
   Future<DocumentSnapshot<Object?>> GetDataById(String id) async {
-    DocumentReference docRef = firestore.collection("mahasiswa").doc(id);
+    DocumentReference docRef = firestore.collection("dosen").doc(id);
 
     return docRef.get();
   }
 
   void delete(String id) {
-    DocumentReference docRef = firestore.collection("mahasiswa").doc(id);
+    DocumentReference docRef = firestore.collection("dosen").doc(id);
 
     try {
       Get.defaultDialog(
@@ -56,21 +57,22 @@ class MahasiswaController extends GetxController {
   }
 
 
-  void Update(String npm, String nama, String id, String alamat) async {
-    DocumentReference mahasiswaById = firestore.collection("mahasiswa").doc(id);
+  void Update(String nidn, String nama, String id, String prodi, String fakultas) async {
+    DocumentReference dosenById = firestore.collection("dosen").doc(id);
 
     try {
-      await mahasiswaById.update({
-        "npm": npm,
+      await dosenById.update({
+        "nidn": nidn,
         "nama": nama,
-        "alamat": alamat,
+        "prodi": prodi,
+        "fakultas": fakultas,
       });
 
       Get.defaultDialog(
         title: "Berhasil",
-        middleText: "Berhasil mengubah data Mahasiswa.",
+        middleText: "Berhasil mengubah data Dosen.",
         onConfirm: () {
-          cNpm.clear();
+          cNidn.clear();
           cNama.clear();
           Get.back();
           Get.back();
@@ -81,27 +83,29 @@ class MahasiswaController extends GetxController {
       print(e);
       Get.defaultDialog(
         title: "Terjadi Kesalahan",
-        middleText: "Gagal Menambahkan Mahasiswa.",
+        middleText: "Gagal Menambahkan Dosen.",
       );
     }
 }
 
-  void add(String npm, String nama, String alamat) async {
-    CollectionReference mahasiswa = firestore.collection("mahasiswa");
+  void add(String nidn, String nama, String prodi, String fakultas) async {
+    CollectionReference dosen = firestore.collection("dosen");
 
     try {
-      await mahasiswa.add({
-        "npm": npm,
+      await dosen.add({
+        "nidn": nidn,
         "nama": nama,
-        "alamat": alamat,
+        "prodi": prodi,
+        "fakultas": fakultas,
       });
       Get.defaultDialog(
           title: "Berhasil",
-          middleText: "Berhasil menyimpan data mahasiswa",
+          middleText: "Berhasil menyimpan data dosen",
           onConfirm: () {
-            cNpm.clear();
+            cNidn.clear();
             cNama.clear();
-            cAlamat.clear();
+            cProdi.clear();
+            cFakultas.clear();
             Get.back();
             Get.back();
             Get.back();
@@ -120,18 +124,20 @@ class MahasiswaController extends GetxController {
   @override
   void onInit() {
     // TODO: implement onInit
-    cNpm = TextEditingController();
+    cNidn = TextEditingController();
     cNama = TextEditingController();
-    cAlamat = TextEditingController();
+    cProdi = TextEditingController();
+    cFakultas = TextEditingController();
     super.onInit();
   }
 
   @override
   void onClose() {
     // TODO: implement onClose
-    cNpm.dispose();
+    cNidn.dispose();
     cNama.dispose();
-    cAlamat.dispose();
+    cProdi.dispose();
+    cFakultas.dispose();
     super.onClose();
   }
 }

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:get/get.dart';
-import 'package:myapp/app/modules/mahasiswa/views/mahasiswa_update_view.dart';
+import 'package:myapp/app/modules/dosen/views/dosen_update_view.dart';
 
-import '../controllers/mahasiswa_controller.dart';
+import '../controllers/dosen_controller.dart';
 
-class MahasiswaView extends GetView<MahasiswaController> {
+class DosenView extends GetView<DosenController> {
   void ShowOption(id) async {
     var result = await Get.dialog(
         SimpleDialog(
@@ -15,7 +15,7 @@ class MahasiswaView extends GetView<MahasiswaController> {
             ListTile(
               onTap: () {
                 Get.back();
-                Get.to(() => MahasiswaUpdateView(), arguments: id);
+                Get.to(() => DosenUpdateView(), arguments: id);
               },
               title: Text("Update"),
             ),
@@ -42,13 +42,17 @@ class MahasiswaView extends GetView<MahasiswaController> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot<Object?>>(
-      stream: Get.put(MahasiswaController()).StreamData(),
+      stream: Get.put(DosenController()).StreamData(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           // ambil data dari firebase
           var listAllDocs = snapshot.data?.docs ?? [];
           return listAllDocs.length > 0
-              ? ListView.builder(
+              ? ListView.separated(
+                    separatorBuilder: (context, index) => Divider(
+                      thickness: 1,
+                      color: Colors.grey.shade300,
+                    ),
                   itemCount: listAllDocs.length,
                   itemBuilder: (context, index) => ListTile(
                     leading: CircleAvatar(
@@ -57,8 +61,13 @@ class MahasiswaView extends GetView<MahasiswaController> {
                     ),
                     title: Text(
                         "${(listAllDocs[index].data() as Map<String, dynamic>)["nama"]}"),
-                    subtitle: Text(
-                        "${(listAllDocs[index].data() as Map<String, dynamic>)["npm"]}"),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("${(listAllDocs[index].data() as Map<String, dynamic>)["nidn"]}"),
+                          Text("${(listAllDocs[index].data() as Map<String, dynamic>)["prodi"]}"),
+                        ],
+                      ),
                     trailing: IconButton(
                       onPressed: () {
                         ShowOption(listAllDocs[index].id);
