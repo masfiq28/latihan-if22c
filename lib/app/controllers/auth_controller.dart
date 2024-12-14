@@ -47,10 +47,9 @@ class AuthController extends GetxController {
         Get.offAllNamed(Routes.HOME);
       } else
         (Get.defaultDialog(
-            title: "Proses Gagal",
-            middleText: "Email belum diverifikasi, Silahkan Cek Email Anda.",
-          )
-        );
+          title: "Proses Gagal",
+          middleText: "Email belum diverifikasi, Silahkan Cek Email Anda.",
+        ));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
@@ -74,7 +73,7 @@ class AuthController extends GetxController {
   }
 
   void resetpassword(String email) async {
-   if (email != "" && GetUtils.isEmail(email)) {
+    if (email != "" && GetUtils.isEmail(email)) {
       try {
         await auth.sendPasswordResetEmail(email: email);
         Get.defaultDialog(
@@ -94,6 +93,15 @@ class AuthController extends GetxController {
     } else {
       Get.defaultDialog(
           title: "Terjadi kesalahan", middleText: "Email tidak valid");
-    } 
+    }
+  }
+
+  void LoginGoogle() async {
+    try {} catch (eror) {
+      Get.defaultDialog(
+        title: "Terjadi Kesalahan",
+        middleText: "Tidak dapat melakukan login google.",
+      );
+    }
   }
 }

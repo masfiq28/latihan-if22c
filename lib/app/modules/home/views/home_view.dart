@@ -86,10 +86,10 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(
-                    Icons.account_circle,
-                    size: 80,
-                    color: Colors.white,
+                  CircleAvatar(
+                    radius: 40, // Ukuran radius lingkaran
+                    backgroundImage: NetworkImage('https://upload.wikimedia.org/wikipedia/id/thumb/5/53/Arsenal_FC.svg/484px-Arsenal_FC.svg.png?20120629075044'), // Path ke gambar lokal
+                    backgroundColor: Colors.grey, // Warna latar belakang jika gambar tidak tersedia
                   ),
                   Text(
                     "M Syafiq Nasrullah",
