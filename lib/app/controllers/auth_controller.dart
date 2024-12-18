@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:myapp/app/routes/app_pages.dart';
 
 class AuthController extends GetxController {
@@ -97,7 +98,24 @@ class AuthController extends GetxController {
   }
 
   void LoginGoogle() async {
-    try {} catch (eror) {
+    try {
+      GoogleSignIn _googleSignIn = GoogleSignIn();
+      GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser != null) {
+        final GoogleSignInAuthentication? googleAuth =
+            await googleUser?.authentication;
+        // Create a new credential
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth?.accessToken,
+          idToken: googleAuth?.idToken,
+        );
+        await FirebaseAuth.instance.signInWithCredential(credential);
+        Get.offAllNamed(Routes.HOME);
+        print(googleUser);
+      } else {
+        throw "Belum memilih akun google";
+      }
+    } catch (eror) {
       Get.defaultDialog(
         title: "Terjadi Kesalahan",
         middleText: "Tidak dapat melakukan login google.",
